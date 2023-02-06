@@ -78,7 +78,7 @@ contract WHMM is Ownable {
 
         uint256 feeAmount = (IERC20(wh_tokens[wh_token_index]).balanceOf(address(this)) * feePips) / (IERC20(wh_tokens[wh_token_index]).balanceOf(address(this)) + IERC20(native).balanceOf(address(this)));
 
-        uint256 amountOut = amountIn - feeAmount;
+        uint256 amountOut = amountIn + feeAmount;
 
         IERC20(wh_tokens[wh_token_index]).transfer(msg.sender, amountOut);
 
