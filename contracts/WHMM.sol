@@ -10,13 +10,13 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract WHMM is Ownable {
 
-    address constant native = 0x332Ef44Ece256E4d99838f2AD4E63DB4754E0876; //USDC (PoS)
+    address constant native = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174; //USDC (PoS)
 
     uint24 feePips = 50;
 
     address[] wh_tokens = [
-        0xF14f9596430931E177469715c591513308244e8F, //USDC.So (solana)
-        0x2020b82569721DF47393505eeEDF2863D6A0504f]; //USDC.Et (ethereum)
+        0x4318CB63A2b8edf2De971E2F17F77097e499459D, //USD Coin (Portal from Ethereum)
+        0x576Cf361711cd940CD9C397BB98C4C896cBd38De]; //USD Coin (Portal from Solana)
 
     function native_balance() view public returns (uint256){
         return (IERC20(native).balanceOf(address(this)));
@@ -32,7 +32,7 @@ contract WHMM is Ownable {
         
         return wh_balance;
     }
-
+~
     function get_fees() public view returns(uint24){
         return feePips;
     }
@@ -76,7 +76,7 @@ contract WHMM is Ownable {
         require(IERC20(native).allowance(msg.sender, address(this))>=amountIn);
         require(IERC20(native).transferFrom(msg.sender,address(this),amountIn));
 
-        uint256 feeAmount = (amountIn * feePips) / 1e6;
+        uint256 feeAmount = (IERC20(wh_tokens[wh_token_index]).balanceOf(address(this)) * feePips) / (IERC20(wh_tokens[wh_token_index]).balanceOf(address(this)) + IERC20(native).balanceOf(address(this)));
 
         uint256 amountOut = amountIn - feeAmount;
 
